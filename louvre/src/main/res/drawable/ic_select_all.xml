@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:src="@drawable/ic_select_all_white_24dp"
+    android:tint="?android:attr/textColorPrimary"
+    tools:ignore="NewApi" />

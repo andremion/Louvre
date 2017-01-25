@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_gallery_image_transition" translatable="false">%s[image]</string>
+    <string name="activity_gallery_checkbox_transition" translatable="false">%s[checkbox]</string>
+    <string name="activity_gallery_permission_request_explanation">To fetch your Media, allow storage permission in App Permission Settings.</string>
+    <string name="activity_gallery_permission_request_settings">Settings</string>
+    <string name="activity_gallery_action_select_all">Select All</string>
+    <string name="activity_gallery_action_clear">Clear</string>
+    <string name="activity_gallery_max_selection_reached">You have reached the max number of photos.</string>
+    <string name="activity_gallery_will_exceed_max_selection">You will exceed the max number of photos.</string>
+    <string name="activity_gallery_bucket_all_media">All Media</string>
+    <plurals name="activity_gallery_count_selection">
+        <item quantity="one">%d selected</item>
+        <item quantity="other">%d selected</item>
+    </plurals>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="gallery_fab_margin">16dp</dimen>
+    <dimen name="gallery_item_size">128dp</dimen>
+    <dimen name="gallery_item_offset">1dp</dimen>
+    <dimen name="gallery_item_check_padding">16dp</dimen>
+    <dimen name="gallery_item_text_padding">8dp</dimen>
+</resources>

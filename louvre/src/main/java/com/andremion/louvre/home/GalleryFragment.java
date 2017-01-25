@@ -1,0 +1,250 @@
+package com.andremion.louvre.home;
+
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+
+import com.andremion.louvre.R;
+import com.andremion.louvre.data.MediaLoader;
+import com.andremion.louvre.preview.PreviewActivity;
+import com.andremion.louvre.util.ItemOffsetDecoration;
+import com.andremion.louvre.util.transition.MediaSharedElementCallback;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, GalleryAdapter.Callbacks {
+
+    public interface Callbacks {
+
+        void onBucketClick(String label);
+
+        void onMediaClick(@NonNull View imageView, View checkView, long bucketId, int position);
+
+        void onSelectionUpdated(int count);
+
+        void onMaxSelectionReached();
+
+        void onWillExceedMaxSelection();
+    }
+
+    private final MediaLoader mMediaLoader;
+    private final GalleryAdapter mAdapter;
+    private GridLayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
+    private Callbacks mCallbacks;
+    private boolean mShouldHandleBackPressed;
+
+    private MediaSharedElementCallback mSharedElementEnterCallback = new MediaSharedElementCallback();
+
+    public GalleryFragment() {
+        mMediaLoader = new MediaLoader();
+        mAdapter = new GalleryAdapter();
+        mAdapter.setCallbacks(this);
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
+    }
+
+    public void setMediaTypeFilter(@NonNull String[] mediaTypes) {
+        mMediaLoader.setMediaTypes(mediaTypes);
+    }
+
+    public void setMaxSelection(@IntRange(from = 0) int maxSelection) {
+        mAdapter.setMaxSelection(maxSelection);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(context instanceof Callbacks)) {
+            throw new IllegalArgumentException(context.getClass().getSimpleName() + " must implement " + Callbacks.class.getName());
+        }
+        mCallbacks = (Callbacks) context;
+        if (!(context instanceof FragmentActivity)) {
+            throw new IllegalArgumentException(context.getClass().getSimpleName() + " must inherit from " + FragmentActivity.class.getName());
+        }
+        mMediaLoader.onAttach((FragmentActivity) context, this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.gallery_menu, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        boolean isMedia = mAdapter.getItemViewType(0) == GalleryAdapter.VIEW_TYPE_MEDIA;
+        MenuItem selectAll = menu.findItem(R.id.action_select_all);
+        selectAll.setVisible(isMedia);
+        MenuItem clear = menu.findItem(R.id.action_clear);
+        clear.setVisible(isMedia);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_select_all) {
+            mAdapter.selectAll();
+            return true;
+        }
+        if (item.getItemId() == R.id.action_clear) {
+            mAdapter.clearSelection();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBucketLoadFinished(@Nullable Cursor data) {
+        mAdapter.swapData(GalleryAdapter.VIEW_TYPE_BUCKET, data);
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onMediaLoadFinished(@Nullable Cursor data) {
+        mAdapter.swapData(GalleryAdapter.VIEW_TYPE_MEDIA, data);
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+        mMediaLoader.onDetach();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+
+        mLayoutManager = new GridLayoutManager(getContext(), 1);
+        mAdapter.setLayoutManager(mLayoutManager);
+
+        final int spacing = getResources().getDimensionPixelSize(R.dimen.gallery_item_offset);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setClipToPadding(false);
+        mRecyclerView.addItemDecoration(new ItemOffsetDecoration(spacing));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                int size = getResources().getDimensionPixelSize(R.dimen.gallery_item_size);
+                int width = mRecyclerView.getMeasuredWidth();
+                int columnCount = width / (size + spacing);
+                mLayoutManager.setSpanCount(columnCount);
+                return false;
+            }
+        });
+
+        return view;
+    }
+
+    public void onActivityReenter(int resultCode, Intent data) {
+
+        final int position = PreviewActivity.getPosition(resultCode, data);
+        if (position != RecyclerView.NO_POSITION) {
+            mRecyclerView.scrollToPosition(position);
+        }
+
+        mSharedElementEnterCallback = new MediaSharedElementCallback();
+        getActivity().setExitSharedElementCallback(mSharedElementEnterCallback);
+
+        //noinspection ConstantConditions
+        getActivity().supportPostponeEnterTransition();
+        mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(position);
+                if (holder instanceof GalleryAdapter.MediaViewHolder) {
+                    GalleryAdapter.MediaViewHolder mediaViewHolder = (GalleryAdapter.MediaViewHolder) holder;
+                    mSharedElementEnterCallback.setSharedElementViews(mediaViewHolder.mImageView, mediaViewHolder.mCheckView);
+                }
+
+                getActivity().supportStartPostponedEnterTransition();
+
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onBucketClick(long bucketId, String label) {
+        mMediaLoader.loadByBucket(bucketId);
+        mCallbacks.onBucketClick(label);
+        mShouldHandleBackPressed = true;
+    }
+
+    @Override
+    public void onMediaClick(View imageView, View checkView, long bucketId, int position) {
+        mCallbacks.onMediaClick(imageView, checkView, bucketId, position);
+    }
+
+    @Override
+    public void onSelectionUpdated(int count) {
+        mCallbacks.onSelectionUpdated(count);
+    }
+
+    @Override
+    public void onMaxSelectionReached() {
+        mCallbacks.onMaxSelectionReached();
+    }
+
+    @Override
+    public void onWillExceedMaxSelection() {
+        mCallbacks.onWillExceedMaxSelection();
+    }
+
+    /**
+     * Load the initial data if it handles the back pressed
+     *
+     * @return If this Fragment handled the back pressed callback
+     */
+    public boolean onBackPressed() {
+        if (mShouldHandleBackPressed) {
+            loadBuckets();
+            return true;
+        }
+        return false;
+    }
+
+    public void loadBuckets() {
+        mMediaLoader.loadBuckets();
+        mShouldHandleBackPressed = false;
+    }
+
+    public List<Uri> getSelection() {
+        return new ArrayList<>(mAdapter.getSelection());
+    }
+
+    public LinkedHashMap<Long, Uri> getRawSelection() {
+        return new LinkedHashMap<>(mAdapter.getRawSelection());
+    }
+
+    public void setSelection(@NonNull HashMap<Long, Uri> selection) {
+        mAdapter.setSelection(selection);
+    }
+
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Louvre.Theme.Light.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="appbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="Louvre.Theme.Dark" parent="Theme.AppCompat.NoActionBar" />
+
+    <style name="Louvre.Theme.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="appbarTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="Louvre.Theme.Preview" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+</resources>
