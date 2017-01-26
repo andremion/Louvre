@@ -46,8 +46,12 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
     public static void startActivity(@NonNull Activity activity, int requestCode,
                                      @IntRange(from = 0) int maxSelection, String... mediaTypeFilter) {
         Intent intent = new Intent(activity, GalleryActivity.class);
-        intent.putExtra(EXTRA_MAX_SELECTION, maxSelection);
-        intent.putExtra(EXTRA_MEDIA_TYPE_FILTER, mediaTypeFilter);
+        if (maxSelection > 0) {
+            intent.putExtra(EXTRA_MAX_SELECTION, maxSelection);
+        }
+        if (mediaTypeFilter != null && mediaTypeFilter.length > 0) {
+            intent.putExtra(EXTRA_MEDIA_TYPE_FILTER, mediaTypeFilter);
+        }
         activity.startActivityForResult(intent, requestCode);
     }
 

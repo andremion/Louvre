@@ -38,6 +38,7 @@ public class Louvre {
 
     private Louvre(@NonNull Activity activity) {
         mActivity = activity;
+        mRequestCode = -1;
     }
 
     public static Louvre init(@NonNull Activity activity) {
@@ -61,7 +62,7 @@ public class Louvre {
     }
 
     /**
-     * Set the media type to filter the query
+     * Set the media type to filter the query with a combination of one of these types: {@link #IMAGE_TYPE_BMP}, {@link #IMAGE_TYPE_JPEG}, {@link #IMAGE_TYPE_PNG}
      */
     public Louvre setMediaTypeFilter(@MediaType @NonNull String... mediaTypeFilter) {
         mMediaTypeFilter = mediaTypeFilter;
@@ -69,6 +70,9 @@ public class Louvre {
     }
 
     public void open() {
+        if (mRequestCode == -1) {
+            throw new IllegalArgumentException("You need to define a request code in setRequestCode(int) method");
+        }
         GalleryActivity.startActivity(mActivity, mRequestCode, mMaxSelection, mMediaTypeFilter);
     }
 
