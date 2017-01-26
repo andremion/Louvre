@@ -84,7 +84,7 @@ See more at the [sample](https://github.com/andremion/Louvre/tree/master/sample)
 Contributions are always welcome!
 
 **Issues:**
-Fell free to open a new issue. Follow the [ISSUE_TEMPLATE.MD](https://github.com/andremion/Louvre/ISSUE_TEMPLATE.md)
+Fell free to open a new issue. Follow the [ISSUE_TEMPLATE.MD](https://github.com/andremion/Louvre/tree/master/ISSUE_TEMPLATE.md)
 
 Follow the "fork-and-pull" Git workflow.
 
