@@ -79,6 +79,24 @@ louvre.setMediaTypeFilter(Louvre.IMAGE_TYPE_JPEG, Louvre.IMAGE_TYPE_PNG)
 
 See more at the [sample](https://github.com/andremion/Louvre/tree/master/sample)
 
+## Contributing
+
+Contributions are always welcome!
+
+**Issues:**
+Fell free to open a new issue. Follow the [ISSUE_TEMPLATE.MD](https://github.com/andremion/Louvre/ISSUE_TEMPLATE.md)
+
+Follow the "fork-and-pull" Git workflow.
+
+ 1. **Fork** the repo on GitHub
+ 2. **Clone** the project to your own machine
+ 3. **Commit** changes to your own branch
+ 4. **Merge** with current *development* branch
+ 5. **Push** your work back up to your fork
+ 7. Submit a **Pull request** your changes can be reviewed (please refere the issue if reported)
+
+**Prevent** code-style related changes. Format the code before commiting.
+
 ## License
 
     Copyright 2017 André Mion
