@@ -4,13 +4,80 @@
 
 ![Icon](https://raw.githubusercontent.com/andremion/Louvre/master/sample/src/main/res/mipmap-hdpi/ic_launcher.png)
 # Louvre
-A media gallery image picker
+A small customizable image picker. Useful to handle an gallery image pick action built-in your app.
 
 ![Sample](https://raw.githubusercontent.com/andremion/Louvre/master/art/sample.gif)
 
 **Images from Google Image Search*
 
 [![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.andremion.louvre.sample)
+
+## Usage
+
+Choose one of the **Louvre** themes to use in `GalleryActivity` and override it to define your app color palette.
+
+```xml
+<style name="AppTheme.Louvre.Light.DarkActionBar" parent="Louvre.Theme.Light.DarkActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+</style>
+```
+```xml
+<style name="AppTheme.Louvre.Dark" parent="Louvre.Theme.Dark">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+</style>
+```
+```xml
+<style name="AppTheme.Louvre.Light" parent="Louvre.Theme.Light">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+</style>
+```
+
+For `PreviewActivity` you just need to define the accent color.
+
+```xml
+<style name="AppTheme.Louvre.Preview" parent="Louvre.Theme.Preview">
+    <item name="colorAccent">@color/colorAccent</item>
+</style>
+```
+
+Declare the **Louvre** activities in `AndroidManifest.xml` file using your new app themes.
+
+```xml
+<activity
+    android:name="com.andremion.louvre.home.GalleryActivity"
+    android:theme="@style/AppTheme.Louvre.Light.DarkActionBar" />
+<activity
+    android:name="com.andremion.louvre.preview.PreviewActivity"
+    android:theme="@style/AppTheme.Louvre.Preview" />
+```
+
+In your `Activity` you just need the below lines of code to open the **Louvre**.
+
+```java
+Louvre.init(myActivity)
+        .setRequestCode(LOUVRE_REQUEST_CODE)
+        .open();
+```
+
+But you can customize the picker:
+
+######Setting the max images allowed to pick
+```java
+louvre.setMaxSelection(10)
+```
+
+######Setting the media type to filter the query with a combination of one of these types: `Louvre.IMAGE_TYPE_BMP`, `Louvre.IMAGE_TYPE_JPEG`, `Louvre.IMAGE_TYPE_PNG`
+```java
+louvre.setMediaTypeFilter(Louvre.IMAGE_TYPE_JPEG, Louvre.IMAGE_TYPE_PNG)
+```
+
+See more at the [sample](https://github.com/andremion/Louvre/tree/master/sample)
 
 ## License
 
