@@ -12,6 +12,27 @@ A small customizable image picker. Useful to handle an gallery image pick action
 
 [![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.andremion.louvre.sample)
 
+## Installation
+
+Include the library in your `build.gradle`
+
+```groovy
+dependencies{
+    compile 'com.github.andremion:louvre:1.0.0'
+}
+```
+
+or in your `pom.xml` if you are using Maven
+
+```xml
+<dependency>
+  <groupId>com.github.andremion</groupId>
+  <artifactId>louvre</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+```
+
 ## Usage
 
 Choose one of the **Louvre** themes to use in `GalleryActivity` and override it to define your app color palette.
@@ -78,6 +99,17 @@ louvre.setMediaTypeFilter(Louvre.IMAGE_TYPE_JPEG, Louvre.IMAGE_TYPE_PNG)
 ```
 
 See more at the [sample](https://github.com/andremion/Louvre/tree/master/sample)
+
+## Libraries and tools used in the project
+
+* [Design Support Library](http://developer.android.com/intl/pt-br/tools/support-library/features.html#design)
+The Design package provides APIs to support adding material design components and patterns to your apps.
+* [CounterFab](https://github.com/andremion/CounterFab)
+A FloatingActionButton subclass that shows a counter badge on right top corner.
+* [Picasso](https://github.com/square/picasso)
+A powerful image downloading and caching library for Android
+* [PhotoView](https://github.com/chrisbanes/PhotoView)
+Implementation of ImageView for Android that supports zooming, by various touch gestures.
 
 ## Contributing
 
