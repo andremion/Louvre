@@ -1,6 +1,9 @@
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 ![minSdkVersion 19](https://img.shields.io/badge/minSdkVersion-19-red.svg?style=true)
-![compileSdkVersion 24](https://img.shields.io/badge/compileSdkVersion-24-yellow.svg?style=true)
+![compileSdkVersion 25](https://img.shields.io/badge/compileSdkVersion-25-yellow.svg?style=true)
+
+[![Android Arsenal Louvre](https://img.shields.io/badge/Android%20Arsenal-Louvre-green.svg?style=true)](https://android-arsenal.com/details/1/5188)
+[![MaterialUp Louvre](https://img.shields.io/badge/MaterialUp-Louvre-blue.svg?style=true)](https://www.uplabs.com/posts/louvre)
 
 ![Icon](https://raw.githubusercontent.com/andremion/Louvre/master/sample/src/main/res/mipmap-hdpi/ic_launcher.png)
 # Louvre
@@ -76,6 +79,12 @@ Declare the **Louvre** activities in `AndroidManifest.xml` file using your new a
 <activity
     android:name="com.andremion.louvre.preview.PreviewActivity"
     android:theme="@style/AppTheme.Louvre.Preview" />
+```
+
+Add `READ_EXTERNAL_STORAGE` permission in your `AndroidManifest.xml` file.
+
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
 
 In your `Activity` you just need the below lines of code to open the **Louvre**.
