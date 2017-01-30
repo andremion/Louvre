@@ -14,23 +14,23 @@ A small customizable image picker. Useful to handle an gallery image pick action
 
 ## Installation
 
-Include the library in your `build.gradle`
+Add this in your root `build.gradle` file (**not** your app module `build.gradle` file):
+
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+Then, add the library in your app module `build.gradle`
 
 ```groovy
 dependencies{
     compile 'com.github.andremion:louvre:1.0.0'
 }
-```
-
-or in your `pom.xml` if you are using Maven
-
-```xml
-<dependency>
-  <groupId>com.github.andremion</groupId>
-  <artifactId>louvre</artifactId>
-  <version>1.0.0</version>
-  <type>pom</type>
-</dependency>
 ```
 
 ## Usage
