@@ -69,7 +69,7 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
     private Callbacks mCallbacks;
     private boolean mShouldHandleBackPressed;
 
-    private MediaSharedElementCallback mSharedElementEnterCallback = new MediaSharedElementCallback();
+    private MediaSharedElementCallback mSharedElementCallback;
 
     public GalleryFragment() {
         mMediaLoader = new MediaLoader();
@@ -183,8 +183,8 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
             mRecyclerView.scrollToPosition(position);
         }
 
-        mSharedElementEnterCallback = new MediaSharedElementCallback();
-        getActivity().setExitSharedElementCallback(mSharedElementEnterCallback);
+        mSharedElementCallback = new MediaSharedElementCallback();
+        getActivity().setExitSharedElementCallback(mSharedElementCallback);
 
         //noinspection ConstantConditions
         getActivity().supportPostponeEnterTransition();
@@ -196,7 +196,7 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
                 RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(position);
                 if (holder instanceof GalleryAdapter.MediaViewHolder) {
                     GalleryAdapter.MediaViewHolder mediaViewHolder = (GalleryAdapter.MediaViewHolder) holder;
-                    mSharedElementEnterCallback.setSharedElementViews(mediaViewHolder.mImageView, mediaViewHolder.mCheckView);
+                    mSharedElementCallback.setSharedElementViews(mediaViewHolder.mImageView, mediaViewHolder.mCheckView);
                 }
 
                 getActivity().supportStartPostponedEnterTransition();
