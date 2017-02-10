@@ -36,4 +36,4 @@ dependencies {
     })
 }
 
-apply from: 'https://raw.githubusercontent.com/andremion/JCenter/master/deploy.gradle'
+//apply from: 'https://raw.githubusercontent.com/andremion/JCenter/master/deploy.gradle'

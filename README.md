@@ -1,6 +1,10 @@
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 ![minSdkVersion 19](https://img.shields.io/badge/minSdkVersion-19-red.svg?style=true)
-![compileSdkVersion 24](https://img.shields.io/badge/compileSdkVersion-24-yellow.svg?style=true)
+![compileSdkVersion 25](https://img.shields.io/badge/compileSdkVersion-25-yellow.svg?style=true)
+[![Download](https://api.bintray.com/packages/andremion/github/Louvre/images/download.svg)](https://bintray.com/andremion/github/Louvre/_latestVersion)
+
+[![Android Arsenal Louvre](https://img.shields.io/badge/Android%20Arsenal-Louvre-green.svg?style=true)](https://android-arsenal.com/details/1/5188)
+[![MaterialUp Louvre](https://img.shields.io/badge/MaterialUp-Louvre-blue.svg?style=true)](https://www.uplabs.com/posts/louvre)
 
 ![Icon](https://raw.githubusercontent.com/andremion/Louvre/master/sample/src/main/res/mipmap-hdpi/ic_launcher.png)
 # Louvre
@@ -14,23 +18,23 @@ A small customizable image picker. Useful to handle an gallery image pick action
 
 ## Installation
 
-Include the library in your `build.gradle`
+Add this in your root `build.gradle` file (**not** your app module `build.gradle` file):
+
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+Then, add the library in your app module `build.gradle`
 
 ```groovy
 dependencies{
     compile 'com.github.andremion:louvre:1.0.0'
 }
-```
-
-or in your `pom.xml` if you are using Maven
-
-```xml
-<dependency>
-  <groupId>com.github.andremion</groupId>
-  <artifactId>louvre</artifactId>
-  <version>1.0.0</version>
-  <type>pom</type>
-</dependency>
 ```
 
 ## Usage
@@ -76,6 +80,12 @@ Declare the **Louvre** activities in `AndroidManifest.xml` file using your new a
 <activity
     android:name="com.andremion.louvre.preview.PreviewActivity"
     android:theme="@style/AppTheme.Louvre.Preview" />
+```
+
+Add `READ_EXTERNAL_STORAGE` permission in your `AndroidManifest.xml` file.
+
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
 
 In your `Activity` you just need the below lines of code to open the **Louvre**.
