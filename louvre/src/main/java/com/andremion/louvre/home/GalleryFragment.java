@@ -69,7 +69,7 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
 
     private final MediaLoader mMediaLoader;
     private final GalleryAdapter mAdapter;
-    //    private View mEmptyView;
+    private View mEmptyView;
     private GridLayoutManager mLayoutManager;
     private RecyclerView mRecyclerView;
     private Callbacks mCallbacks;
@@ -137,20 +137,20 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
     public void onBucketLoadFinished(@Nullable Cursor data) {
         mAdapter.swapData(GalleryAdapter.VIEW_TYPE_BUCKET, data);
         getActivity().invalidateOptionsMenu();
-//        updateEmptyState();
+        updateEmptyState();
     }
 
     @Override
     public void onMediaLoadFinished(@Nullable Cursor data) {
         mAdapter.swapData(GalleryAdapter.VIEW_TYPE_MEDIA, data);
         getActivity().invalidateOptionsMenu();
-//        updateEmptyState();
+        updateEmptyState();
     }
 
-//    private void updateEmptyState() {
-//        mRecyclerView.setVisibility(mAdapter.getItemCount() > 0 ? View.VISIBLE : View.INVISIBLE);
-//        mEmptyView.setVisibility(mAdapter.getItemCount() > 0 ? View.INVISIBLE : View.VISIBLE);
-//    }
+    private void updateEmptyState() {
+        mRecyclerView.setVisibility(mAdapter.getItemCount() > 0 ? View.VISIBLE : View.INVISIBLE);
+        mEmptyView.setVisibility(mAdapter.getItemCount() > 0 ? View.INVISIBLE : View.VISIBLE);
+    }
 
     @Override
     public void onDetach() {
@@ -164,7 +164,7 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-//        mEmptyView = view.findViewById(android.R.id.empty);
+        mEmptyView = view.findViewById(android.R.id.empty);
 
         mLayoutManager = new GridLayoutManager(getContext(), 1);
         mAdapter.setLayoutManager(mLayoutManager);
@@ -188,9 +188,9 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
             }
         });
 
-//        if (savedInstanceState != null) {
-//            updateEmptyState();
-//        }
+        if (savedInstanceState != null) {
+            updateEmptyState();
+        }
 
         return view;
     }
