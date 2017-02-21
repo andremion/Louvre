@@ -26,7 +26,6 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -75,15 +74,6 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
         return data.getParcelableArrayListExtra(EXTRA_SELECTION);
     }
 
-    private final Transition.TransitionListener mSharedElementExitListener =
-            new TransitionCallback() {
-                @Override
-                public void onTransitionEnd(Transition transition) {
-                    setExitSharedElementCallback((SharedElementCallback) null);
-                    updateFabVisibility();
-                }
-            };
-
     private GalleryFragment mFragment;
     private ViewGroup mContentView;
     private CounterFab mFab;
@@ -120,20 +110,22 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setupTransition() {
         TransitionInflater inflater = TransitionInflater.from(this);
-        getWindow().setExitTransition(inflater.inflateTransition(R.transition.gallery_exit));
-        getWindow().setReenterTransition(inflater.inflateTransition(R.transition.gallery_reenter));
-        Transition sharedElementExitTransition = inflater.inflateTransition(R.transition.shared_element);
-        // Listener to reset shared element exit transition callbacks.
-        sharedElementExitTransition.addListener(mSharedElementExitListener);
-        getWindow().setSharedElementExitTransition(sharedElementExitTransition);
-    }
-
-    private void updateFabVisibility() {
-        if (mFab.isShown()) {
-            mFab.hide();
-        } else {
-            mFab.show();
-        }
+        Transition exitTransition = inflater.inflateTransition(R.transition.gallery_exit);
+        exitTransition.addListener(new TransitionCallback() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+                mFab.hide();
+            }
+        });
+        getWindow().setExitTransition(exitTransition);
+        Transition reenterTransition = inflater.inflateTransition(R.transition.gallery_reenter);
+        reenterTransition.addListener(new TransitionCallback() {
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                mFab.show();
+            }
+        });
+        getWindow().setReenterTransition(reenterTransition);
     }
 
     @Override
