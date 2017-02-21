@@ -144,11 +144,6 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        // TODO: 18/01/2017 onAttachedToRecyclerView
-    }
-
-    @Override
     public GalleryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, @ViewType int viewType) {
         if (VIEW_TYPE_MEDIA == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_gallery_media, parent, false);
