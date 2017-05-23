@@ -18,25 +18,34 @@ package com.andremion.louvre.sample;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.widget.NumberPicker;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class NumberPickerDialog extends DialogFragment implements DialogInterface.OnClickListener {
 
     private static final String TAG = NumberPickerDialog.class.getSimpleName();
     private static final String ARG_REQUEST_CODE = "request_code_arg";
+    private static final String ARG_SELECTION = "selection_arg";
     private static final int MIN_VALUE = 1;
     private static final int MAX_VALUE = 100;
     private static final int INITIAL_VALUE = 10;
 
-    public static void show(@NonNull FragmentManager fragmentManager, int requestCode) {
+    public static void show(@NonNull FragmentManager fragmentManager, int requestCode, @Nullable List<Uri> selection) {
         NumberPickerDialog dialog = new NumberPickerDialog();
         Bundle args = new Bundle();
         args.putInt(ARG_REQUEST_CODE, requestCode);
+        if (selection != null) {
+            args.putSerializable(ARG_SELECTION, new LinkedList<>(selection));
+        }
         dialog.setArguments(args);
         dialog.show(fragmentManager, TAG);
     }
@@ -61,8 +70,10 @@ public class NumberPickerDialog extends DialogFragment implements DialogInterfac
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
+        //noinspection unchecked
         MediaTypeFilterDialog.show(getFragmentManager(),
                 getArguments().getInt(ARG_REQUEST_CODE),
-                mNumberPicker.getValue());
+                mNumberPicker.getValue(),
+                (List<Uri>) getArguments().getSerializable(ARG_SELECTION));
     }
 }

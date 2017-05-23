@@ -39,6 +39,7 @@ import com.andremion.louvre.preview.PreviewActivity;
 import com.andremion.louvre.util.transition.TransitionCallback;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GalleryActivity extends StoragePermissionActivity implements GalleryFragment.Callbacks, View.OnClickListener {
@@ -56,13 +57,19 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
      * @param activity        Context to launch activity from.
      * @param requestCode     If >= 0, this code will be returned in onActivityResult() when the activity exits.
      * @param maxSelection    The max count of image selection
+     * @param selection       The current image selection
      * @param mediaTypeFilter The media types that will display
      */
     public static void startActivity(@NonNull Activity activity, int requestCode,
-                                     @IntRange(from = 0) int maxSelection, String... mediaTypeFilter) {
+                                     @IntRange(from = 0) int maxSelection,
+                                     List<Uri> selection,
+                                     String... mediaTypeFilter) {
         Intent intent = new Intent(activity, GalleryActivity.class);
         if (maxSelection > 0) {
             intent.putExtra(EXTRA_MAX_SELECTION, maxSelection);
+        }
+        if (selection != null) {
+            intent.putExtra(EXTRA_SELECTION, new LinkedList<>(selection));
         }
         if (mediaTypeFilter != null && mediaTypeFilter.length > 0) {
             intent.putExtra(EXTRA_MEDIA_TYPE_FILTER, mediaTypeFilter);
@@ -90,14 +97,18 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
 
         mContentView = (ViewGroup) findViewById(R.id.coordinator_layout);
 
+        mFab = (CounterFab) findViewById(R.id.fab_done);
+        mFab.setOnClickListener(this);
+
         mFragment = (GalleryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_gallery);
         mFragment.setMaxSelection(getIntent().getIntExtra(EXTRA_MAX_SELECTION, DEFAULT_MAX_SELECTION));
+        if (getIntent().hasExtra(EXTRA_SELECTION)) {
+            //noinspection unchecked
+            mFragment.setSelection((List<Uri>) getIntent().getSerializableExtra(EXTRA_SELECTION));
+        }
         if (getIntent().hasExtra(EXTRA_MEDIA_TYPE_FILTER)) {
             mFragment.setMediaTypeFilter(getIntent().getStringArrayExtra(EXTRA_MEDIA_TYPE_FILTER));
         }
-
-        mFab = (CounterFab) findViewById(R.id.fab_done);
-        mFab.setOnClickListener(this);
 
         if (savedInstanceState == null) {
             setResult(RESULT_CANCELED);
@@ -170,11 +181,11 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
     @Override
     public void onMediaClick(@NonNull View imageView, @NonNull View checkView, long bucketId, int position) {
         if (getIntent().hasExtra(EXTRA_MEDIA_TYPE_FILTER)) {
-            PreviewActivity.startActivity(this, PREVIEW_REQUEST_CODE, imageView, checkView, bucketId, position, mFragment.getRawSelection(),
+            PreviewActivity.startActivity(this, PREVIEW_REQUEST_CODE, imageView, checkView, bucketId, position, mFragment.getSelection(),
                     getIntent().getIntExtra(EXTRA_MAX_SELECTION, DEFAULT_MAX_SELECTION),
                     getIntent().getStringArrayExtra(EXTRA_MEDIA_TYPE_FILTER));
         } else {
-            PreviewActivity.startActivity(this, PREVIEW_REQUEST_CODE, imageView, checkView, bucketId, position, mFragment.getRawSelection(),
+            PreviewActivity.startActivity(this, PREVIEW_REQUEST_CODE, imageView, checkView, bucketId, position, mFragment.getSelection(),
                     getIntent().getIntExtra(EXTRA_MAX_SELECTION, DEFAULT_MAX_SELECTION));
         }
     }
@@ -188,7 +199,7 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
         }
 
         if (requestCode == PREVIEW_REQUEST_CODE) {
-            mFragment.setSelection(PreviewActivity.getRawSelection(data));
+            mFragment.setSelection(PreviewActivity.getSelection(data));
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }

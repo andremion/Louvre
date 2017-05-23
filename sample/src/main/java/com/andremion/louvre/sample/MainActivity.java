@@ -17,6 +17,7 @@
 package com.andremion.louvre.sample;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -29,11 +30,14 @@ import android.view.ViewTreeObserver;
 import com.andremion.louvre.home.GalleryActivity;
 import com.andremion.louvre.util.ItemOffsetDecoration;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int LOUVRE_REQUEST_CODE = 0;
 
     private MainAdapter mAdapter;
+    private List<Uri> mSelection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +67,27 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NumberPickerDialog.show(getSupportFragmentManager(), LOUVRE_REQUEST_CODE);
+                NumberPickerDialog.show(getSupportFragmentManager(), LOUVRE_REQUEST_CODE, mSelection);
             }
         });
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        //noinspection unchecked
+        mSelection = (List<Uri>) getLastCustomNonConfigurationInstance();
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return mSelection;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LOUVRE_REQUEST_CODE && resultCode == RESULT_OK) {
-            mAdapter.swapData(GalleryActivity.getSelection(data));
+            mAdapter.swapData(mSelection = GalleryActivity.getSelection(data));
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
