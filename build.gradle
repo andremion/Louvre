@@ -26,8 +26,8 @@ allprojects {
         minSdkVersion = 19
         targetSdkVersion = 25
 
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 3
+        versionName = "1.1.0"
 
         supportLibraryVersion = '25.3.1'
         counterFabVersion = '1.0.1'
