@@ -18,8 +18,10 @@ package com.andremion.louvre.sample;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +30,7 @@ import android.util.SparseBooleanArray;
 import com.andremion.louvre.Louvre;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -36,12 +39,16 @@ public class MediaTypeFilterDialog extends DialogFragment implements DialogInter
 
     private static final String ARG_REQUEST_CODE = "request_code_arg";
     private static final String ARG_MAX_SELECTION = "max_selection_arg";
+    private static final String ARG_SELECTION = "selection_arg";
 
-    public static void show(@NonNull FragmentManager fragmentManager, int requestCode, int maxSelection) {
+    public static void show(@NonNull FragmentManager fragmentManager, int requestCode, int maxSelection, @Nullable List<Uri> selection) {
         MediaTypeFilterDialog dialog = new MediaTypeFilterDialog();
         Bundle args = new Bundle();
         args.putInt(ARG_REQUEST_CODE, requestCode);
         args.putInt(ARG_MAX_SELECTION, maxSelection);
+        if (selection != null) {
+            args.putSerializable(ARG_SELECTION, new LinkedList<>(selection));
+        }
         dialog.setArguments(args);
         dialog.show(fragmentManager, TAG);
     }
@@ -74,10 +81,11 @@ public class MediaTypeFilterDialog extends DialogFragment implements DialogInter
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        //noinspection WrongConstant
+        //noinspection WrongConstant,ConstantConditions,unchecked
         Louvre.init(getActivity())
                 .setRequestCode(getArguments().getInt(ARG_REQUEST_CODE))
                 .setMaxSelection(getArguments().getInt(ARG_MAX_SELECTION))
+                .setSelection((List<Uri>) getArguments().get(ARG_SELECTION))
                 .setMediaTypeFilter(parseToArray(mSelectedTypes))
                 .open();
     }

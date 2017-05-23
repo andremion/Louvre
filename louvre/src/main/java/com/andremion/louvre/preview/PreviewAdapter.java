@@ -40,8 +40,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import static android.view.View.NO_ID;
 
@@ -58,7 +58,7 @@ class PreviewAdapter extends PagerAdapter {
     private final LayoutInflater mInflater;
     private final CheckedTextView mCheckbox;
     private final MediaSharedElementCallback mSharedElementCallback;
-    private final HashMap<Long, Uri> mSelection;
+    private final List<Uri> mSelection;
     @Nullable
     private PreviewAdapter.Callbacks mCallbacks;
     private int mMaxSelection;
@@ -68,7 +68,7 @@ class PreviewAdapter extends PagerAdapter {
     private boolean mDontAnimate;
     private int mCurrentPosition = RecyclerView.NO_POSITION;
 
-    PreviewAdapter(@NonNull FragmentActivity activity, @NonNull CheckedTextView checkbox, @NonNull MediaSharedElementCallback sharedElementCallback, @NonNull HashMap<Long, Uri> selection) {
+    PreviewAdapter(@NonNull FragmentActivity activity, @NonNull CheckedTextView checkbox, @NonNull MediaSharedElementCallback sharedElementCallback, @NonNull List<Uri> selection) {
         mActivity = activity;
         mInflater = LayoutInflater.from(activity);
         mCheckbox = checkbox;
@@ -150,8 +150,8 @@ class PreviewAdapter extends PagerAdapter {
     }
 
     private boolean isSelected(int position) {
-        long itemId = getItemId(position);
-        return mSelection.containsKey(itemId);
+        Uri data = getData(position);
+        return mSelection.contains(data);
     }
 
     private void startPostponedEnterTransition(int position) {
@@ -197,19 +197,19 @@ class PreviewAdapter extends PagerAdapter {
         }
     }
 
-    LinkedHashMap<Long, Uri> getRawSelection() {
-        return new LinkedHashMap<>(mSelection);
+    List<Uri> getSelection() {
+        return new LinkedList<>(mSelection);
     }
 
     private boolean handleChangeSelection(int position) {
-        final long itemId = getItemId(position);
+        Uri data = getData(position);
         if (!isSelected(position)) {
             if (mSelection.size() == mMaxSelection) {
                 return false;
             }
-            mSelection.put(itemId, getData(position));
+            mSelection.add(data);
         } else {
-            mSelection.remove(itemId);
+            mSelection.remove(data);
         }
         return true;
     }

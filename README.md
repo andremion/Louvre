@@ -103,6 +103,13 @@ But you can customize the picker:
 louvre.setMaxSelection(10)
 ```
 
+######Setting the current selected items
+```java
+List<Uri> selection;
+...
+louvre.setSelection(selection)
+```
+
 ######Setting the media type to filter the query with a combination of one of these types: `Louvre.IMAGE_TYPE_BMP`, `Louvre.IMAGE_TYPE_JPEG`, `Louvre.IMAGE_TYPE_PNG`
 ```java
 louvre.setMediaTypeFilter(Louvre.IMAGE_TYPE_JPEG, Louvre.IMAGE_TYPE_PNG)

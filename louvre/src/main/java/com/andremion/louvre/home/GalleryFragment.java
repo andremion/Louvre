@@ -48,8 +48,6 @@ import com.andremion.louvre.util.transition.MediaSharedElementCallback;
 import com.andremion.louvre.util.transition.TransitionCallback;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, GalleryAdapter.Callbacks {
@@ -287,11 +285,7 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
         return new ArrayList<>(mAdapter.getSelection());
     }
 
-    public LinkedHashMap<Long, Uri> getRawSelection() {
-        return new LinkedHashMap<>(mAdapter.getRawSelection());
-    }
-
-    public void setSelection(@NonNull HashMap<Long, Uri> selection) {
+    public void setSelection(@NonNull List<Uri> selection) {
         mAdapter.setSelection(selection);
     }
 
