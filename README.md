@@ -123,8 +123,8 @@ See more at the [sample](https://github.com/andremion/Louvre/tree/master/sample)
 The Design package provides APIs to support adding material design components and patterns to your apps.
 * [CounterFab](https://github.com/andremion/CounterFab)
 A FloatingActionButton subclass that shows a counter badge on right top corner.
-* [Picasso](https://github.com/square/picasso)
-A powerful image downloading and caching library for Android
+* [Glide](https://github.com/bumptech/glide)
+An image loading and caching library for Android focused on smooth scrolling
 * [PhotoView](https://github.com/chrisbanes/PhotoView)
 Implementation of ImageView for Android that supports zooming, by various touch gestures.
 

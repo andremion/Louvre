@@ -22,8 +22,8 @@ allprojects {
     project.ext {
 
         compileSdkVersion = 25
-        buildToolsVersion = '25.0.2'
-        minSdkVersion = 19
+        buildToolsVersion = '25.0.3'
+        minSdkVersion = 16
         targetSdkVersion = 25
 
         versionCode = 3
@@ -31,7 +31,7 @@ allprojects {
 
         supportLibraryVersion = '25.3.1'
         counterFabVersion = '1.0.1'
-        picassoVersion = '2.5.2'
+        glideVersion = '3.8.0'
         photoViewVersion = '2.0.0'
 
         junitVersion = '4.12'

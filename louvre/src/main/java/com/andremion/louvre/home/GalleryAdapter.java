@@ -35,8 +35,7 @@ import android.widget.TextView;
 
 import com.andremion.louvre.R;
 import com.andremion.louvre.util.AnimationHelper;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.lang.annotation.Retention;
@@ -157,10 +156,9 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         String imageTransitionName = holder.itemView.getContext().getString(R.string.activity_gallery_image_transition, data.toString());
         String checkboxTransitionName = holder.itemView.getContext().getString(R.string.activity_gallery_checkbox_transition, data.toString());
         ViewCompat.setTransitionName(holder.mImageView, imageTransitionName);
-        Picasso.with(holder.mImageView.getContext())
+        Glide.with(holder.mImageView.getContext())
                 .load(data)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .fit()
+                .skipMemoryCache(true)
                 .centerCrop()
                 .placeholder(R.color.gallery_item_background)
                 .into(holder.mImageView);
