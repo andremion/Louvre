@@ -24,8 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +47,9 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Uri data = mData.get(position);
-        Picasso.with(holder.mImageView.getContext())
+        Glide.with(holder.mImageView.getContext())
                 .load(data)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .fit()
+                .skipMemoryCache(true)
                 .centerCrop()
                 .placeholder(R.color.gallery_item_background)
                 .into(holder.mImageView);
