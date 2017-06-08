@@ -48,7 +48,7 @@ public class FabBehavior extends FloatingActionButton.Behavior {
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target,
                                int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-        if (Math.abs(dyConsumed) > 0 && child.isShown()) {
+        if (Math.abs(dyConsumed) > 0 && child.getVisibility() == View.VISIBLE) {
             child.hide();
         }
     }

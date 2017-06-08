@@ -96,6 +96,14 @@ Louvre.init(myActivity)
         .open();
 ```
 
+You can also use a `Fragment` to open the **Louvre**. In this case, the `Fragment` will get the `onActivityResult` callback.
+
+```java
+Louvre.init(myFragment)
+        .setRequestCode(LOUVRE_REQUEST_CODE)
+        .open();
+```
+
 But you can customize the picker:
 
 ######Setting the max images allowed to pick

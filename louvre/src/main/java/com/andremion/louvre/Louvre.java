@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.andremion.louvre.home.GalleryActivity;
@@ -49,7 +50,8 @@ public class Louvre {
     @interface MediaType {
     }
 
-    private final Activity mActivity;
+    private Activity mActivity;
+    private Fragment mFragment;
     private int mRequestCode;
     private int mMaxSelection;
     private List<Uri> mSelection;
@@ -60,8 +62,17 @@ public class Louvre {
         mRequestCode = -1;
     }
 
+    private Louvre(@NonNull Fragment fragment) {
+        mFragment = fragment;
+        mRequestCode = -1;
+    }
+
     public static Louvre init(@NonNull Activity activity) {
         return new Louvre(activity);
+    }
+
+    public static Louvre init(@NonNull Fragment fragment) {
+        return new Louvre(fragment);
     }
 
     /**
@@ -100,7 +111,11 @@ public class Louvre {
         if (mRequestCode == -1) {
             throw new IllegalArgumentException("You need to define a request code in setRequestCode(int) method");
         }
-        GalleryActivity.startActivity(mActivity, mRequestCode, mMaxSelection, mSelection, mMediaTypeFilter);
+        if (mActivity != null) {
+            GalleryActivity.startActivity(mActivity, mRequestCode, mMaxSelection, mSelection, mMediaTypeFilter);
+        } else {
+            GalleryActivity.startActivity(mFragment, mRequestCode, mMaxSelection, mSelection, mMediaTypeFilter);
+        }
     }
 
 }
