@@ -18,6 +18,7 @@ package com.andremion.louvre.home;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -26,6 +27,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -64,7 +66,30 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
                                      @IntRange(from = 0) int maxSelection,
                                      List<Uri> selection,
                                      String... mediaTypeFilter) {
-        Intent intent = new Intent(activity, GalleryActivity.class);
+        Intent intent = buildIntent(activity, maxSelection, selection, mediaTypeFilter);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * Start the Gallery Activity with additional launch information.
+     *
+     * @param fragment        Context to launch fragment from.
+     * @param requestCode     If >= 0, this code will be returned in onActivityResult() when the fragment exits.
+     * @param maxSelection    The max count of image selection
+     * @param selection       The current image selection
+     * @param mediaTypeFilter The media types that will display
+     */
+    public static void startActivity(@NonNull Fragment fragment, int requestCode,
+                                     @IntRange(from = 0) int maxSelection,
+                                     List<Uri> selection,
+                                     String... mediaTypeFilter) {
+        Intent intent = buildIntent(fragment.getContext(), maxSelection, selection, mediaTypeFilter);
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
+    @NonNull
+    private static Intent buildIntent(@NonNull Context context, @IntRange(from = 0) int maxSelection, List<Uri> selection, String[] mediaTypeFilter) {
+        Intent intent = new Intent(context, GalleryActivity.class);
         if (maxSelection > 0) {
             intent.putExtra(EXTRA_MAX_SELECTION, maxSelection);
         }
@@ -74,7 +99,7 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
         if (mediaTypeFilter != null && mediaTypeFilter.length > 0) {
             intent.putExtra(EXTRA_MEDIA_TYPE_FILTER, mediaTypeFilter);
         }
-        activity.startActivityForResult(intent, requestCode);
+        return intent;
     }
 
     public static List<Uri> getSelection(Intent data) {
