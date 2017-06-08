@@ -33,7 +33,7 @@ import android.view.View;
  */
 public abstract class StoragePermissionActivity extends AppCompatActivity {
 
-    private static final int REQUEST_READ_EXTERNAL_STORAGE = 0;
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 4321;
     private static final int REQUEST_APP_SETTINGS = 1234;
 
     public void askForPermission() {
@@ -106,10 +106,10 @@ public abstract class StoragePermissionActivity extends AppCompatActivity {
                 .setAction(R.string.activity_gallery_permission_request_settings, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getPackageName(), null);
-                        intent.setData(uri);
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", getPackageName(), null));
+                        intent.addCategory(Intent.CATEGORY_DEFAULT);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivityForResult(intent, REQUEST_APP_SETTINGS);
                     }
                 })
