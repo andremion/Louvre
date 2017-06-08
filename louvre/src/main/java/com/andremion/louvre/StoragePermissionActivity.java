@@ -102,7 +102,7 @@ public abstract class StoragePermissionActivity extends AppCompatActivity {
      * </p>
      */
     private void showExplanation() {
-        Snackbar.make(getWindow().getDecorView(), getString(R.string.activity_gallery_permission_request_explanation), Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(findSuitableView(), getString(R.string.activity_gallery_permission_request_explanation), Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.activity_gallery_permission_request_settings, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -114,6 +114,14 @@ public abstract class StoragePermissionActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    private View findSuitableView() {
+        View view = findViewById(R.id.coordinator_layout);
+        if (view == null) {
+            view = getWindow().getDecorView();
+        }
+        return view;
     }
 
 }
