@@ -205,9 +205,18 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Listener to reset shared element exit transition callbacks.
             getActivity().getWindow().getSharedElementExitTransition().addListener(new TransitionCallback() {
-                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onTransitionEnd(Transition transition) {
+                    removeCallback();
+                }
+
+                @Override
+                public void onTransitionCancel(Transition transition) {
+                    removeCallback();
+                }
+
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                private void removeCallback() {
                     if (getActivity() != null) {
                         getActivity().getWindow().getSharedElementExitTransition().removeListener(this);
                         getActivity().setExitSharedElementCallback((SharedElementCallback) null);

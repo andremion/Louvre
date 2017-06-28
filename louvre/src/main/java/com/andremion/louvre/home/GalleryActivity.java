@@ -160,6 +160,11 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
             public void onTransitionEnd(Transition transition) {
                 mFab.show();
             }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+                mFab.show();
+            }
         });
         getWindow().setReenterTransition(reenterTransition);
     }

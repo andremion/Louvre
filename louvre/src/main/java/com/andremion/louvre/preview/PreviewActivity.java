@@ -91,7 +91,9 @@ public class PreviewActivity extends AppCompatActivity implements MediaLoader.Ca
         View statusBackground = decorView.findViewById(android.R.id.statusBarBackground);
         View navigationBarBackground = decorView.findViewById(android.R.id.navigationBarBackground);
 
-        sharedElements.add(Pair.create(statusBackground, ViewCompat.getTransitionName(statusBackground)));
+        if (statusBackground != null) {
+            sharedElements.add(Pair.create(statusBackground, ViewCompat.getTransitionName(statusBackground)));
+        }
         if (navigationBarBackground != null) {
             sharedElements.add(Pair.create(navigationBarBackground, ViewCompat.getTransitionName(navigationBarBackground)));
         }
@@ -174,6 +176,11 @@ public class PreviewActivity extends AppCompatActivity implements MediaLoader.Ca
         sharedElementEnterTransition.addListener(new TransitionCallback() {
             @Override
             public void onTransitionEnd(Transition transition) {
+                mAdapter.setDontAnimate(false);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
                 mAdapter.setDontAnimate(false);
             }
         });
