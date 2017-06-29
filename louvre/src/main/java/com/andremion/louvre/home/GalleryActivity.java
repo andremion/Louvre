@@ -16,7 +16,6 @@
 
 package com.andremion.louvre.home;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -116,9 +115,7 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
         setContentView(R.layout.activity_gallery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setupTransition();
-        }
+        setupTransition();
 
         mContentView = (ViewGroup) findViewById(R.id.coordinator_layout);
 
@@ -143,30 +140,31 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setupTransition() {
-        TransitionInflater inflater = TransitionInflater.from(this);
-        Transition exitTransition = inflater.inflateTransition(R.transition.gallery_exit);
-        exitTransition.addListener(new TransitionCallback() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                mFab.hide();
-            }
-        });
-        getWindow().setExitTransition(exitTransition);
-        Transition reenterTransition = inflater.inflateTransition(R.transition.gallery_reenter);
-        reenterTransition.addListener(new TransitionCallback() {
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                mFab.show();
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            TransitionInflater inflater = TransitionInflater.from(this);
+            Transition exitTransition = inflater.inflateTransition(R.transition.gallery_exit);
+            exitTransition.addListener(new TransitionCallback() {
+                @Override
+                public void onTransitionStart(Transition transition) {
+                    mFab.hide();
+                }
+            });
+            getWindow().setExitTransition(exitTransition);
+            Transition reenterTransition = inflater.inflateTransition(R.transition.gallery_reenter);
+            reenterTransition.addListener(new TransitionCallback() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    mFab.show();
+                }
 
-            @Override
-            public void onTransitionCancel(Transition transition) {
-                mFab.show();
-            }
-        });
-        getWindow().setReenterTransition(reenterTransition);
+                @Override
+                public void onTransitionCancel(Transition transition) {
+                    mFab.show();
+                }
+            });
+            getWindow().setReenterTransition(reenterTransition);
+        }
     }
 
     @Override

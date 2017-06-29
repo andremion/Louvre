@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.andremion.louvre.preview.PreviewActivity">
 
+    <!--The view order matters for the transition-->
+
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"

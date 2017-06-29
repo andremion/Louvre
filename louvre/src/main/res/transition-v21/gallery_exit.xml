@@ -23,9 +23,9 @@
     <explode>
         <targets>
             <target android:excludeId="@android:id/statusBarBackground" />
+            <target android:excludeId="@android:id/navigationBarBackground" />
             <target android:excludeId="@id/appbar" />
             <target android:excludeId="@id/fab_done" />
-            <target android:excludeId="@android:id/navigationBarBackground" />
         </targets>
     </explode>
 </transitionSet>

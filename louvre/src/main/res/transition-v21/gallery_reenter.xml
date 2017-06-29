@@ -15,13 +15,22 @@
   -->
 
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--The slide edges are inverted in reenter transition because is a Visibility transition-->
     <slide
         android:interpolator="@android:interpolator/linear_out_slow_in"
         android:slideEdge="top">
         <targets>
+            <target android:targetId="@id/appbar" />
+        </targets>
+    </slide>
+    <slide
+        android:interpolator="@android:interpolator/linear_out_slow_in"
+        android:slideEdge="bottom">
+        <targets>
             <target android:excludeId="@android:id/statusBarBackground" />
-            <target android:excludeId="@id/fab_done" />
             <target android:excludeId="@android:id/navigationBarBackground" />
+            <target android:excludeId="@id/appbar" />
+            <target android:excludeId="@id/fab_done" />
         </targets>
     </slide>
 </transitionSet>
