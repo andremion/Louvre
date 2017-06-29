@@ -33,7 +33,7 @@ Then, add the library in your app module `build.gradle`
 
 ```groovy
 dependencies{
-    compile 'com.github.andremion:louvre:1.0.1'
+    compile 'com.github.andremion:louvre:1.2.0-beta1'
 }
 ```
 
