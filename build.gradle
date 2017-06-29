@@ -18,6 +18,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url "https://maven.google.com" }
     }
     project.ext {
 
@@ -29,7 +30,7 @@ allprojects {
         versionCode = 5
         versionName = "1.2.0-alpha1"
 
-        supportLibraryVersion = '25.3.1'
+        supportLibraryVersion = '25.4.0'
         counterFabVersion = '1.0.1'
         glideVersion = '3.8.0'
         photoViewVersion = '2.0.0'
