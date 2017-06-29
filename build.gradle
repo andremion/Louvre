@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
 }
@@ -21,10 +21,10 @@ allprojects {
     }
     project.ext {
 
-        compileSdkVersion = 25
-        buildToolsVersion = '25.0.3'
+        compileSdkVersion = 26
+        buildToolsVersion = '26.0.0'
         minSdkVersion = 16
-        targetSdkVersion = 25
+        targetSdkVersion = 26
 
         versionCode = 5
         versionName = "1.2.0-alpha1"
