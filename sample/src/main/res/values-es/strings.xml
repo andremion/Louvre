@@ -1,0 +1,4 @@
+<resources>
+    <string name="max_select_prompt">Seleccione la selección máxima</string>
+    <string name="media_type_prompt">Seleccione el filtro de tipo de medio</string>
+</resources>
