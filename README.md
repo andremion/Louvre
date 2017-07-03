@@ -33,7 +33,7 @@ Then, add the library in your app module `build.gradle`
 
 ```groovy
 dependencies{
-    compile 'com.github.andremion:louvre:1.0.1'
+    compile 'com.github.andremion:louvre:1.2.0'
 }
 ```
 
@@ -96,11 +96,26 @@ Louvre.init(myActivity)
         .open();
 ```
 
+You can also use a `Fragment` to open the **Louvre**. In this case, the `Fragment` will get the `onActivityResult` callback.
+
+```java
+Louvre.init(myFragment)
+        .setRequestCode(LOUVRE_REQUEST_CODE)
+        .open();
+```
+
 But you can customize the picker:
 
 ######Setting the max images allowed to pick
 ```java
 louvre.setMaxSelection(10)
+```
+
+######Setting the current selected items
+```java
+List<Uri> selection;
+...
+louvre.setSelection(selection)
 ```
 
 ######Setting the media type to filter the query with a combination of one of these types: `Louvre.IMAGE_TYPE_BMP`, `Louvre.IMAGE_TYPE_JPEG`, `Louvre.IMAGE_TYPE_PNG`
@@ -116,8 +131,8 @@ See more at the [sample](https://github.com/andremion/Louvre/tree/master/sample)
 The Design package provides APIs to support adding material design components and patterns to your apps.
 * [CounterFab](https://github.com/andremion/CounterFab)
 A FloatingActionButton subclass that shows a counter badge on right top corner.
-* [Picasso](https://github.com/square/picasso)
-A powerful image downloading and caching library for Android
+* [Glide](https://github.com/bumptech/glide)
+An image loading and caching library for Android focused on smooth scrolling
 * [PhotoView](https://github.com/chrisbanes/PhotoView)
 Implementation of ImageView for Android that supports zooming, by various touch gestures.
 

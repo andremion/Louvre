@@ -14,18 +14,8 @@
   ~ limitations under the License.
   -->
 
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-    <slide android:slideEdge="top">
-        <targets>
-            <target android:targetId="@id/appbar" />
-        </targets>
-    </slide>
-    <explode>
-        <targets>
-            <target android:excludeId="@android:id/statusBarBackground" />
-            <target android:excludeId="@android:id/navigationBarBackground" />
-            <target android:excludeId="@id/appbar" />
-            <target android:excludeId="@id/fab_done" />
-        </targets>
-    </explode>
-</transitionSet>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:src="@drawable/ic_no_images_black_48dp"
+    android:tint="?android:attr/textColorPrimary"
+    tools:ignore="NewApi" />

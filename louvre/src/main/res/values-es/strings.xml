@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_gallery_permission_request_explanation">Permiso de almacenamiento necesario. Por favor habilitar en los ajustes del teléfono.</string>
+    <string name="activity_gallery_permission_request_settings">Ajustes</string>
+    <string name="activity_gallery_action_select_all">Seleccionar todo</string>
+    <string name="activity_gallery_action_clear">Limpiar</string>
+    <string name="activity_gallery_no_images">No hay fotos.</string>
+    <string name="activity_gallery_max_selection_reached">Has alcanzado el número máximo de fotos.</string>
+    <string name="activity_gallery_will_exceed_max_selection">Usted excederá el número máximo de fotos.</string>
+    <string name="activity_gallery_bucket_all_media">Todas las fotos</string>
+    <plurals name="activity_gallery_count_selection">
+        <item quantity="one">%d seleccionado</item>
+        <item quantity="other">%d seleccionados</item>
+    </plurals>
+</resources>

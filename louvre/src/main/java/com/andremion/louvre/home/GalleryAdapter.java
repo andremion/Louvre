@@ -35,17 +35,13 @@ import android.widget.TextView;
 
 import com.andremion.louvre.R;
 import com.andremion.louvre.util.AnimationHelper;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link RecyclerView.Adapter} subclass used to bind {@link Cursor} items from {@link MediaStore} into {@link RecyclerView}
@@ -79,7 +75,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         void onWillExceedMaxSelection();
     }
 
-    private final LinkedHashMap<Long, Uri> mSelection;
+    private final List<Uri> mSelection;
 
     @Nullable
     private Callbacks mCallbacks;
@@ -91,7 +87,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private Cursor mData;
 
     GalleryAdapter() {
-        mSelection = new LinkedHashMap<>();
+        mSelection = new LinkedList<>();
         setHasStableIds(true);
     }
 
@@ -144,11 +140,6 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        // TODO: 18/01/2017 onAttachedToRecyclerView
-    }
-
-    @Override
     public GalleryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, @ViewType int viewType) {
         if (VIEW_TYPE_MEDIA == viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_gallery_media, parent, false);
@@ -165,10 +156,9 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         String imageTransitionName = holder.itemView.getContext().getString(R.string.activity_gallery_image_transition, data.toString());
         String checkboxTransitionName = holder.itemView.getContext().getString(R.string.activity_gallery_checkbox_transition, data.toString());
         ViewCompat.setTransitionName(holder.mImageView, imageTransitionName);
-        Picasso.with(holder.mImageView.getContext())
+        Glide.with(holder.mImageView.getContext())
                 .load(data)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .fit()
+                .skipMemoryCache(true)
                 .centerCrop()
                 .placeholder(R.color.gallery_item_background)
                 .into(holder.mImageView);
@@ -219,21 +209,13 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     }
 
     List<Uri> getSelection() {
-        List<Uri> selected = new ArrayList<>();
-        for (Map.Entry<Long, Uri> entry : mSelection.entrySet()) {
-            selected.add(entry.getValue());
-        }
-        return selected;
+        return new LinkedList<>(mSelection);
     }
 
-    LinkedHashMap<Long, Uri> getRawSelection() {
-        return new LinkedHashMap<>(mSelection);
-    }
-
-    void setSelection(@NonNull HashMap<Long, Uri> selection) {
+    void setSelection(@NonNull List<Uri> selection) {
         if (!mSelection.equals(selection)) {
             mSelection.clear();
-            mSelection.putAll(selection);
+            mSelection.addAll(selection);
             notifySelectionChanged();
         }
     }
@@ -242,13 +224,12 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         if (mData == null) {
             return;
         }
-        LinkedHashMap<Long, Uri> selectionToAdd = new LinkedHashMap<>();
+        List<Uri> selectionToAdd = new LinkedList<>();
         int count = mData.getCount();
         for (int position = 0; position < count; position++) {
             if (!isSelected(position)) {
-                long id = getItemId(position);
                 Uri data = getData(position);
-                selectionToAdd.put(id, data);
+                selectionToAdd.add(data);
             }
         }
         if (mSelection.size() + selectionToAdd.size() > mMaxSelection) {
@@ -256,7 +237,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
                 mCallbacks.onWillExceedMaxSelection();
             }
         } else {
-            mSelection.putAll(selectionToAdd);
+            mSelection.addAll(selectionToAdd);
             notifySelectionChanged();
         }
     }
@@ -282,8 +263,8 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     }
 
     private boolean isSelected(int position) {
-        long itemId = getItemId(position);
-        return mSelection.containsKey(itemId);
+        Uri data = getData(position);
+        return mSelection.contains(data);
     }
 
     private String getLabel(int position) {
@@ -388,14 +369,14 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     }
 
     private boolean handleChangeSelection(int position) {
-        final long itemId = getItemId(position);
+        Uri data = getData(position);
         if (!isSelected(position)) {
             if (mSelection.size() == mMaxSelection) {
                 return false;
             }
-            mSelection.put(itemId, getData(position));
+            mSelection.add(data);
         } else {
-            mSelection.remove(itemId);
+            mSelection.remove(data);
         }
         return true;
     }

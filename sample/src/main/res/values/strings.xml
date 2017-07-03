@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Louvre</string>
+    <string name="app_name" translatable="false">Louvre</string>
     <string name="max_select_prompt">Select the maximum selection</string>
     <string name="media_type_prompt">Select the media type filter</string>
 </resources>

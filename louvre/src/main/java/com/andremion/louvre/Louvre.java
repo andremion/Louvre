@@ -18,15 +18,18 @@ package com.andremion.louvre;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.andremion.louvre.home.GalleryActivity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.List;
 
 /**
  * A small customizable image picker. Useful to handle an image pick action built-in
@@ -47,9 +50,11 @@ public class Louvre {
     @interface MediaType {
     }
 
-    private final Activity mActivity;
+    private Activity mActivity;
+    private Fragment mFragment;
     private int mRequestCode;
     private int mMaxSelection;
+    private List<Uri> mSelection;
     private String[] mMediaTypeFilter;
 
     private Louvre(@NonNull Activity activity) {
@@ -57,8 +62,17 @@ public class Louvre {
         mRequestCode = -1;
     }
 
+    private Louvre(@NonNull Fragment fragment) {
+        mFragment = fragment;
+        mRequestCode = -1;
+    }
+
     public static Louvre init(@NonNull Activity activity) {
         return new Louvre(activity);
+    }
+
+    public static Louvre init(@NonNull Fragment fragment) {
+        return new Louvre(fragment);
     }
 
     /**
@@ -78,6 +92,14 @@ public class Louvre {
     }
 
     /**
+     * Set the current selected items
+     */
+    public Louvre setSelection(@NonNull List<Uri> selection) {
+        mSelection = selection;
+        return this;
+    }
+
+    /**
      * Set the media type to filter the query with a combination of one of these types: {@link #IMAGE_TYPE_BMP}, {@link #IMAGE_TYPE_JPEG}, {@link #IMAGE_TYPE_PNG}
      */
     public Louvre setMediaTypeFilter(@MediaType @NonNull String... mediaTypeFilter) {
@@ -89,7 +111,11 @@ public class Louvre {
         if (mRequestCode == -1) {
             throw new IllegalArgumentException("You need to define a request code in setRequestCode(int) method");
         }
-        GalleryActivity.startActivity(mActivity, mRequestCode, mMaxSelection, mMediaTypeFilter);
+        if (mActivity != null) {
+            GalleryActivity.startActivity(mActivity, mRequestCode, mMaxSelection, mSelection, mMediaTypeFilter);
+        } else {
+            GalleryActivity.startActivity(mFragment, mRequestCode, mMaxSelection, mSelection, mMediaTypeFilter);
+        }
     }
 
 }

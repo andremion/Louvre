@@ -47,8 +47,7 @@ import com.andremion.louvre.util.transition.TransitionCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
@@ -63,12 +62,12 @@ public class PreviewActivity extends AppCompatActivity implements MediaLoader.Ca
 
     public static void startActivity(@NonNull Activity activity, int requestCode, @NonNull View imageView, @NonNull View checkView,
                                      @IntRange(from = 0) long bucketId, @IntRange(from = 0) int position,
-                                     LinkedHashMap<Long, Uri> selection, int maxSelection, String... mediaTypeFilter) {
+                                     List<Uri> selection, int maxSelection, String... mediaTypeFilter) {
 
         Intent intent = new Intent(activity, PreviewActivity.class);
         intent.putExtra(EXTRA_BUCKET_ID, bucketId);
         intent.putExtra(EXTRA_POSITION, position);
-        intent.putExtra(EXTRA_SELECTION, selection);
+        intent.putExtra(EXTRA_SELECTION, new LinkedList<>(selection));
         intent.putExtra(EXTRA_MAX_SELECTION, maxSelection);
         intent.putExtra(EXTRA_MEDIA_TYPE_FILTER, mediaTypeFilter);
 
@@ -92,7 +91,9 @@ public class PreviewActivity extends AppCompatActivity implements MediaLoader.Ca
         View statusBackground = decorView.findViewById(android.R.id.statusBarBackground);
         View navigationBarBackground = decorView.findViewById(android.R.id.navigationBarBackground);
 
-        sharedElements.add(Pair.create(statusBackground, ViewCompat.getTransitionName(statusBackground)));
+        if (statusBackground != null) {
+            sharedElements.add(Pair.create(statusBackground, ViewCompat.getTransitionName(statusBackground)));
+        }
         if (navigationBarBackground != null) {
             sharedElements.add(Pair.create(navigationBarBackground, ViewCompat.getTransitionName(navigationBarBackground)));
         }
@@ -109,9 +110,9 @@ public class PreviewActivity extends AppCompatActivity implements MediaLoader.Ca
         return NO_POSITION;
     }
 
-    public static HashMap<Long, Uri> getRawSelection(Intent data) {
+    public static List<Uri> getSelection(Intent data) {
         //noinspection unchecked
-        return (HashMap<Long, Uri>) data.getExtras().get(EXTRA_SELECTION);
+        return (List<Uri>) data.getExtras().get(EXTRA_SELECTION);
     }
 
     private MediaLoader mMediaLoader;
@@ -139,7 +140,7 @@ public class PreviewActivity extends AppCompatActivity implements MediaLoader.Ca
         setEnterSharedElementCallback(sharedElementCallback);
 
         //noinspection unchecked
-        HashMap<Long, Uri> selection = (HashMap<Long, Uri>) getIntent().getExtras().get(EXTRA_SELECTION);
+        List<Uri> selection = (List<Uri>) getIntent().getExtras().get(EXTRA_SELECTION);
         assert selection != null;
         int maxSelection = getIntent().getExtras().getInt(EXTRA_MAX_SELECTION);
 
@@ -175,6 +176,11 @@ public class PreviewActivity extends AppCompatActivity implements MediaLoader.Ca
         sharedElementEnterTransition.addListener(new TransitionCallback() {
             @Override
             public void onTransitionEnd(Transition transition) {
+                mAdapter.setDontAnimate(false);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
                 mAdapter.setDontAnimate(false);
             }
         });
@@ -250,7 +256,7 @@ public class PreviewActivity extends AppCompatActivity implements MediaLoader.Ca
 
         Intent data = new Intent();
         data.putExtra(EXTRA_POSITION, position);
-        data.putExtra(EXTRA_SELECTION, mAdapter.getRawSelection());
+        data.putExtra(EXTRA_SELECTION, new LinkedList<>(mAdapter.getSelection()));
         setResult(RESULT_OK, data);
 
         setCheckboxTransitionName(position);

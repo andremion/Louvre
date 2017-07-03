@@ -16,8 +16,8 @@
 
 package com.andremion.louvre.home;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -26,7 +26,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.SharedElementCallback;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -40,6 +40,7 @@ import com.andremion.louvre.preview.PreviewActivity;
 import com.andremion.louvre.util.transition.TransitionCallback;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GalleryActivity extends StoragePermissionActivity implements GalleryFragment.Callbacks, View.OnClickListener {
@@ -57,32 +58,52 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
      * @param activity        Context to launch activity from.
      * @param requestCode     If >= 0, this code will be returned in onActivityResult() when the activity exits.
      * @param maxSelection    The max count of image selection
+     * @param selection       The current image selection
      * @param mediaTypeFilter The media types that will display
      */
     public static void startActivity(@NonNull Activity activity, int requestCode,
-                                     @IntRange(from = 0) int maxSelection, String... mediaTypeFilter) {
-        Intent intent = new Intent(activity, GalleryActivity.class);
+                                     @IntRange(from = 0) int maxSelection,
+                                     List<Uri> selection,
+                                     String... mediaTypeFilter) {
+        Intent intent = buildIntent(activity, maxSelection, selection, mediaTypeFilter);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * Start the Gallery Activity with additional launch information.
+     *
+     * @param fragment        Context to launch fragment from.
+     * @param requestCode     If >= 0, this code will be returned in onActivityResult() when the fragment exits.
+     * @param maxSelection    The max count of image selection
+     * @param selection       The current image selection
+     * @param mediaTypeFilter The media types that will display
+     */
+    public static void startActivity(@NonNull Fragment fragment, int requestCode,
+                                     @IntRange(from = 0) int maxSelection,
+                                     List<Uri> selection,
+                                     String... mediaTypeFilter) {
+        Intent intent = buildIntent(fragment.getContext(), maxSelection, selection, mediaTypeFilter);
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
+    @NonNull
+    private static Intent buildIntent(@NonNull Context context, @IntRange(from = 0) int maxSelection, List<Uri> selection, String[] mediaTypeFilter) {
+        Intent intent = new Intent(context, GalleryActivity.class);
         if (maxSelection > 0) {
             intent.putExtra(EXTRA_MAX_SELECTION, maxSelection);
+        }
+        if (selection != null) {
+            intent.putExtra(EXTRA_SELECTION, new LinkedList<>(selection));
         }
         if (mediaTypeFilter != null && mediaTypeFilter.length > 0) {
             intent.putExtra(EXTRA_MEDIA_TYPE_FILTER, mediaTypeFilter);
         }
-        activity.startActivityForResult(intent, requestCode);
+        return intent;
     }
 
     public static List<Uri> getSelection(Intent data) {
         return data.getParcelableArrayListExtra(EXTRA_SELECTION);
     }
-
-    private final Transition.TransitionListener mSharedElementExitListener =
-            new TransitionCallback() {
-                @Override
-                public void onTransitionEnd(Transition transition) {
-                    setExitSharedElementCallback((SharedElementCallback) null);
-                    updateFabVisibility();
-                }
-            };
 
     private GalleryFragment mFragment;
     private ViewGroup mContentView;
@@ -94,20 +115,22 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
         setContentView(R.layout.activity_gallery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setupTransition();
-        }
+        setupTransition();
 
         mContentView = (ViewGroup) findViewById(R.id.coordinator_layout);
 
+        mFab = (CounterFab) findViewById(R.id.fab_done);
+        mFab.setOnClickListener(this);
+
         mFragment = (GalleryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_gallery);
         mFragment.setMaxSelection(getIntent().getIntExtra(EXTRA_MAX_SELECTION, DEFAULT_MAX_SELECTION));
+        if (getIntent().hasExtra(EXTRA_SELECTION)) {
+            //noinspection unchecked
+            mFragment.setSelection((List<Uri>) getIntent().getSerializableExtra(EXTRA_SELECTION));
+        }
         if (getIntent().hasExtra(EXTRA_MEDIA_TYPE_FILTER)) {
             mFragment.setMediaTypeFilter(getIntent().getStringArrayExtra(EXTRA_MEDIA_TYPE_FILTER));
         }
-
-        mFab = (CounterFab) findViewById(R.id.fab_done);
-        mFab.setOnClickListener(this);
 
         if (savedInstanceState == null) {
             setResult(RESULT_CANCELED);
@@ -117,22 +140,30 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setupTransition() {
-        TransitionInflater inflater = TransitionInflater.from(this);
-        getWindow().setExitTransition(inflater.inflateTransition(R.transition.gallery_exit));
-        getWindow().setReenterTransition(inflater.inflateTransition(R.transition.gallery_reenter));
-        Transition sharedElementExitTransition = inflater.inflateTransition(R.transition.shared_element);
-        // Listener to reset shared element exit transition callbacks.
-        sharedElementExitTransition.addListener(mSharedElementExitListener);
-        getWindow().setSharedElementExitTransition(sharedElementExitTransition);
-    }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            TransitionInflater inflater = TransitionInflater.from(this);
+            Transition exitTransition = inflater.inflateTransition(R.transition.gallery_exit);
+            exitTransition.addListener(new TransitionCallback() {
+                @Override
+                public void onTransitionStart(Transition transition) {
+                    mFab.hide();
+                }
+            });
+            getWindow().setExitTransition(exitTransition);
+            Transition reenterTransition = inflater.inflateTransition(R.transition.gallery_reenter);
+            reenterTransition.addListener(new TransitionCallback() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    mFab.show();
+                }
 
-    private void updateFabVisibility() {
-        if (mFab.isShown()) {
-            mFab.hide();
-        } else {
-            mFab.show();
+                @Override
+                public void onTransitionCancel(Transition transition) {
+                    mFab.show();
+                }
+            });
+            getWindow().setReenterTransition(reenterTransition);
         }
     }
 
@@ -178,11 +209,11 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
     @Override
     public void onMediaClick(@NonNull View imageView, @NonNull View checkView, long bucketId, int position) {
         if (getIntent().hasExtra(EXTRA_MEDIA_TYPE_FILTER)) {
-            PreviewActivity.startActivity(this, PREVIEW_REQUEST_CODE, imageView, checkView, bucketId, position, mFragment.getRawSelection(),
+            PreviewActivity.startActivity(this, PREVIEW_REQUEST_CODE, imageView, checkView, bucketId, position, mFragment.getSelection(),
                     getIntent().getIntExtra(EXTRA_MAX_SELECTION, DEFAULT_MAX_SELECTION),
                     getIntent().getStringArrayExtra(EXTRA_MEDIA_TYPE_FILTER));
         } else {
-            PreviewActivity.startActivity(this, PREVIEW_REQUEST_CODE, imageView, checkView, bucketId, position, mFragment.getRawSelection(),
+            PreviewActivity.startActivity(this, PREVIEW_REQUEST_CODE, imageView, checkView, bucketId, position, mFragment.getSelection(),
                     getIntent().getIntExtra(EXTRA_MAX_SELECTION, DEFAULT_MAX_SELECTION));
         }
     }
@@ -196,7 +227,7 @@ public class GalleryActivity extends StoragePermissionActivity implements Galler
         }
 
         if (requestCode == PREVIEW_REQUEST_CODE) {
-            mFragment.setSelection(PreviewActivity.getRawSelection(data));
+            mFragment.setSelection(PreviewActivity.getSelection(data));
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }

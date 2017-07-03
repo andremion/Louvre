@@ -16,18 +16,22 @@
 
 package com.andremion.louvre.home;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,10 +45,9 @@ import com.andremion.louvre.data.MediaLoader;
 import com.andremion.louvre.preview.PreviewActivity;
 import com.andremion.louvre.util.ItemOffsetDecoration;
 import com.andremion.louvre.util.transition.MediaSharedElementCallback;
+import com.andremion.louvre.util.transition.TransitionCallback;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, GalleryAdapter.Callbacks {
@@ -64,6 +67,7 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
 
     private final MediaLoader mMediaLoader;
     private final GalleryAdapter mAdapter;
+    private View mEmptyView;
     private GridLayoutManager mLayoutManager;
     private RecyclerView mRecyclerView;
     private Callbacks mCallbacks;
@@ -131,12 +135,19 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
     public void onBucketLoadFinished(@Nullable Cursor data) {
         mAdapter.swapData(GalleryAdapter.VIEW_TYPE_BUCKET, data);
         getActivity().invalidateOptionsMenu();
+        updateEmptyState();
     }
 
     @Override
     public void onMediaLoadFinished(@Nullable Cursor data) {
         mAdapter.swapData(GalleryAdapter.VIEW_TYPE_MEDIA, data);
         getActivity().invalidateOptionsMenu();
+        updateEmptyState();
+    }
+
+    private void updateEmptyState() {
+        mRecyclerView.setVisibility(mAdapter.getItemCount() > 0 ? View.VISIBLE : View.INVISIBLE);
+        mEmptyView.setVisibility(mAdapter.getItemCount() > 0 ? View.INVISIBLE : View.VISIBLE);
     }
 
     @Override
@@ -150,6 +161,8 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+
+        mEmptyView = view.findViewById(android.R.id.empty);
 
         mLayoutManager = new GridLayoutManager(getContext(), 1);
         mAdapter.setLayoutManager(mLayoutManager);
@@ -173,6 +186,10 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
             }
         });
 
+        if (savedInstanceState != null) {
+            updateEmptyState();
+        }
+
         return view;
     }
 
@@ -185,6 +202,28 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
 
         mSharedElementCallback = new MediaSharedElementCallback();
         getActivity().setExitSharedElementCallback(mSharedElementCallback);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Listener to reset shared element exit transition callbacks.
+            getActivity().getWindow().getSharedElementExitTransition().addListener(new TransitionCallback() {
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    removeCallback();
+                }
+
+                @Override
+                public void onTransitionCancel(Transition transition) {
+                    removeCallback();
+                }
+
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                private void removeCallback() {
+                    if (getActivity() != null) {
+                        getActivity().getWindow().getSharedElementExitTransition().removeListener(this);
+                        getActivity().setExitSharedElementCallback((SharedElementCallback) null);
+                    }
+                }
+            });
+        }
 
         //noinspection ConstantConditions
         getActivity().supportPostponeEnterTransition();
@@ -255,11 +294,7 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
         return new ArrayList<>(mAdapter.getSelection());
     }
 
-    public LinkedHashMap<Long, Uri> getRawSelection() {
-        return new LinkedHashMap<>(mAdapter.getRawSelection());
-    }
-
-    public void setSelection(@NonNull HashMap<Long, Uri> selection) {
+    public void setSelection(@NonNull List<Uri> selection) {
         mAdapter.setSelection(selection);
     }
 
