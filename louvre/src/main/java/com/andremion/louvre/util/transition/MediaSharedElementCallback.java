@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Some hacks pulled from https://github.com/andremion/android-unsplash
+ * Some hacks pulled from https://github.com/googlesamples/android-unsplash
  */
 public class MediaSharedElementCallback extends SharedElementCallback {
 
