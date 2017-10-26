@@ -32,7 +32,7 @@ allprojects {
         versionName = "1.2.0"
 
         supportLibraryVersion = '26.1.0'
-        counterFabVersion = '1.0.1'
+        counterFabVersion = '1.0.2'
         glideVersion = '3.8.0'
         photoViewVersion = '2.0.0'
 
