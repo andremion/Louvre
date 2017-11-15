@@ -73,8 +73,6 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
     private Callbacks mCallbacks;
     private boolean mShouldHandleBackPressed;
 
-    private MediaSharedElementCallback mSharedElementCallback;
-
     public GalleryFragment() {
         mMediaLoader = new MediaLoader();
         mAdapter = new GalleryAdapter();
@@ -200,8 +198,8 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
             mRecyclerView.scrollToPosition(position);
         }
 
-        mSharedElementCallback = new MediaSharedElementCallback();
-        getActivity().setExitSharedElementCallback(mSharedElementCallback);
+        final MediaSharedElementCallback sharedElementCallback = new MediaSharedElementCallback();
+        getActivity().setExitSharedElementCallback(sharedElementCallback);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Listener to reset shared element exit transition callbacks.
             getActivity().getWindow().getSharedElementExitTransition().addListener(new TransitionCallback() {
@@ -235,7 +233,7 @@ public class GalleryFragment extends Fragment implements MediaLoader.Callbacks, 
                 RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(position);
                 if (holder instanceof GalleryAdapter.MediaViewHolder) {
                     GalleryAdapter.MediaViewHolder mediaViewHolder = (GalleryAdapter.MediaViewHolder) holder;
-                    mSharedElementCallback.setSharedElementViews(mediaViewHolder.mImageView, mediaViewHolder.mCheckView);
+                    sharedElementCallback.setSharedElementViews(mediaViewHolder.mImageView, mediaViewHolder.mCheckView);
                 }
 
                 getActivity().supportStartPostponedEnterTransition();
