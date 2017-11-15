@@ -17,6 +17,7 @@
 package com.andremion.louvre.preview;
 
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.IntRange;
@@ -34,10 +35,11 @@ import android.widget.ImageView;
 
 import com.andremion.louvre.R;
 import com.andremion.louvre.util.transition.MediaSharedElementCallback;
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
@@ -139,15 +141,18 @@ class PreviewAdapter extends PagerAdapter {
     private void onViewBound(ViewHolder holder, int position, Uri data) {
         String imageTransitionName = holder.imageView.getContext().getString(R.string.activity_gallery_image_transition, data.toString());
         ViewCompat.setTransitionName(holder.imageView, imageTransitionName);
-        DrawableRequestBuilder<Uri> request = Glide.with(mActivity)
-                .load(data)
+
+        RequestOptions options = new RequestOptions()
                 .skipMemoryCache(true)
-                .fitCenter()
-                .listener(new ImageLoadingCallback(position));
+                .fitCenter();
         if (mDontAnimate) {
-            request.dontAnimate();
+            options.dontAnimate();
         }
-        request.into(holder.imageView);
+        Glide.with(mActivity)
+                .load(data)
+                .apply(options)
+                .listener(new ImageLoadingCallback(position))
+                .into(holder.imageView);
     }
 
     private boolean isSelected(int position) {
@@ -222,12 +227,12 @@ class PreviewAdapter extends PagerAdapter {
 
         ViewHolder(View view) {
             itemView = view;
-            imageView = (ImageView) view.findViewById(R.id.image);
+            imageView = view.findViewById(R.id.image);
         }
 
     }
 
-    private class ImageLoadingCallback implements RequestListener<Uri, GlideDrawable> {
+    private class ImageLoadingCallback implements RequestListener<Drawable> {
 
         final int mPosition;
 
@@ -236,13 +241,13 @@ class PreviewAdapter extends PagerAdapter {
         }
 
         @Override
-        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
             startPostponedEnterTransition(mPosition);
             return false;
         }
 
         @Override
-        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
             startPostponedEnterTransition(mPosition);
             return false;
         }

@@ -36,6 +36,7 @@ import android.widget.TextView;
 import com.andremion.louvre.R;
 import com.andremion.louvre.util.AnimationHelper;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.lang.annotation.Retention;
@@ -158,9 +159,9 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         ViewCompat.setTransitionName(holder.mImageView, imageTransitionName);
         Glide.with(holder.mImageView.getContext())
                 .load(data)
-                .skipMemoryCache(true)
-                .centerCrop()
-                .placeholder(R.color.gallery_item_background)
+                .apply(RequestOptions.skipMemoryCacheOf(true)
+                        .centerCrop()
+                        .placeholder(R.color.gallery_item_background))
                 .into(holder.mImageView);
 
         boolean selected = isSelected(position);
@@ -295,7 +296,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
         private ViewHolder(View itemView) {
             super(itemView);
-            mImageView = (ImageView) itemView.findViewById(R.id.image);
+            mImageView = itemView.findViewById(R.id.image);
         }
     }
 
@@ -305,7 +306,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
         private BucketViewHolder(View itemView) {
             super(itemView);
-            mTextView = (TextView) itemView.findViewById(R.id.text);
+            mTextView = itemView.findViewById(R.id.text);
             itemView.setOnClickListener(this);
         }
 
@@ -332,7 +333,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
         private MediaViewHolder(View itemView) {
             super(itemView);
-            mCheckView = (CheckedTextView) itemView.findViewById(R.id.check);
+            mCheckView = itemView.findViewById(R.id.check);
             mCheckView.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
