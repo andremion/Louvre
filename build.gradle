@@ -33,7 +33,7 @@ allprojects {
 
         supportLibraryVersion = '26.1.0'
         counterFabVersion = '1.0.2'
-        glideVersion = '3.8.0'
+        glideVersion = '4.3.1'
         photoViewVersion = '2.0.0'
 
         junitVersion = '4.12'
