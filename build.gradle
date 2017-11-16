@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     }
 }
 
@@ -28,12 +28,12 @@ allprojects {
         minSdkVersion = 16
         targetSdkVersion = 26
 
-        versionCode = 8
-        versionName = "1.2.1"
+        versionCode = 9
+        versionName = "1.2.3"
 
         supportLibraryVersion = '26.1.0'
         counterFabVersion = '1.0.2'
-        glideVersion = '3.8.0'
+        glideVersion = '4.3.1'
         photoViewVersion = '2.0.0'
 
         junitVersion = '4.12'

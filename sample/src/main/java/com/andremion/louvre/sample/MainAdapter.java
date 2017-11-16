@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +50,9 @@ class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         Uri data = mData.get(position);
         Glide.with(holder.mImageView.getContext())
                 .load(data)
-                .skipMemoryCache(true)
-                .centerCrop()
-                .placeholder(R.color.gallery_item_background)
+                .apply(RequestOptions.skipMemoryCacheOf(true)
+                        .centerCrop()
+                        .placeholder(com.andremion.louvre.R.color.gallery_item_background))
                 .into(holder.mImageView);
     }
 
