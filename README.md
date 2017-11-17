@@ -1,3 +1,13 @@
+<img alt="Icon" src="sample/src/main/res/mipmap-xxhdpi/ic_launcher.png?raw=true" align="left" hspace="1" vspace="1">
+
+<a alt='Buy Me a Coffee at ko-fi.com' href='https://ko-fi.com/T6T05M4O' target='_blank' align='right'><img align='right' height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi4.png?v=0' border='0' /></a>
+<a alt='Get it on Google Play' href='https://play.google.com/store/apps/details?id=com.andremion.louvre.sample' target='_blank' align='right'><img align='right' height='36' style='border:0px;height:36px;' src='https://developer.android.com/images/brand/en_generic_rgb_wo_60.png' border='0' /></a>
+# Louvre
+
+A small customizable image picker. Useful to handle an gallery image pick action built-in your app.
+
+</br>
+
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 ![minSdkVersion 19](https://img.shields.io/badge/minSdkVersion-19-red.svg?style=true)
 ![compileSdkVersion 25](https://img.shields.io/badge/compileSdkVersion-25-yellow.svg?style=true)
@@ -6,15 +16,10 @@
 [![Android Arsenal Louvre](https://img.shields.io/badge/Android%20Arsenal-Louvre-green.svg?style=true)](https://android-arsenal.com/details/1/5188)
 [![MaterialUp Louvre](https://img.shields.io/badge/MaterialUp-Louvre-blue.svg?style=true)](https://www.uplabs.com/posts/louvre)
 
-![Icon](https://raw.githubusercontent.com/andremion/Louvre/master/sample/src/main/res/mipmap-hdpi/ic_launcher.png)
-# Louvre
-A small customizable image picker. Useful to handle an gallery image pick action built-in your app.
-
-![Sample](https://raw.githubusercontent.com/andremion/Louvre/master/art/sample.gif)
-
-**Images from Google Image Search*
-
-[![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.andremion.louvre.sample)
+<p align="center">
+  <img alt='Sample' src="https://raw.githubusercontent.com/andremion/Louvre/master/art/sample.gif"></br>
+  <i>*Images from Google Image Search</i>
+</p>
 
 ## Installation
 
