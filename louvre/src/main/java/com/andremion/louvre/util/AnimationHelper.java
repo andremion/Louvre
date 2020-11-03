@@ -16,8 +16,8 @@
 
 package com.andremion.louvre.util;
 
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 public class AnimationHelper {

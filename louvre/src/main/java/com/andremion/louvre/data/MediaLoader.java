@@ -21,13 +21,13 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.andremion.louvre.R;
 
@@ -106,7 +106,7 @@ public class MediaLoader implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         // no-op
     }
 
@@ -129,23 +129,23 @@ public class MediaLoader implements LoaderManager.LoaderCallbacks<Cursor> {
             filter.append(String.format("'%s'", type));
         }
         if (filter.length() > 0) {
-            mTypeFilter = MediaStore.Images.ImageColumns.MIME_TYPE + " IN (" + filter + ")";
+            mTypeFilter = MediaStore.Images.Media.MIME_TYPE + " IN (" + filter + ")";
         }
     }
 
     public void loadBuckets() {
         ensureActivityAttached();
-        mActivity.getSupportLoaderManager().restartLoader(BUCKET_LOADER, null, this);
+        LoaderManager.getInstance(mActivity).restartLoader(BUCKET_LOADER, null, this);
     }
 
     public void loadByBucket(@IntRange(from = 0) long bucketId) {
         ensureActivityAttached();
         if (ALL_MEDIA_BUCKET_ID == bucketId) {
-            mActivity.getSupportLoaderManager().restartLoader(TIME_LOADER, null, this);
+            LoaderManager.getInstance(mActivity).restartLoader(TIME_LOADER, null, this);
         } else {
             Bundle args = new Bundle();
             args.putLong(BUCKET_ID, bucketId);
-            mActivity.getSupportLoaderManager().restartLoader(MEDIA_LOADER, args, this);
+            LoaderManager.getInstance(mActivity).restartLoader(MEDIA_LOADER, args, this);
         }
     }
 

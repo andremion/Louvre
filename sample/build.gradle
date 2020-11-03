@@ -2,14 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.andremion.louvre.sample"
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
         versionCode project.ext.versionCode
         versionName project.ext.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -23,10 +22,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':louvre')
-    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "com.google.android.material:material:$materialVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
 
     testImplementation "junit:junit:$junitVersion"
-
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
 }

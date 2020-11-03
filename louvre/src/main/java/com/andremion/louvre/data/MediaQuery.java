@@ -30,23 +30,23 @@ class MediaQuery {
     static final Uri GALLERY_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
     static final String[] IMAGE_PROJECTION = {
-            MediaStore.Images.ImageColumns._ID,
-            MediaStore.Images.ImageColumns.BUCKET_ID,
-            MediaStore.Images.ImageColumns.DISPLAY_NAME,
-            MediaStore.Images.ImageColumns.DATA
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.BUCKET_ID,
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.DATA
     };
     static final String[] ALL_IMAGE_PROJECTION = {
-            MediaStore.Images.ImageColumns._ID,
-            MediaLoader.ALL_MEDIA_BUCKET_ID + " AS " + MediaStore.Images.ImageColumns.BUCKET_ID,
-            MediaStore.Images.ImageColumns.DISPLAY_NAME,
-            MediaStore.Images.ImageColumns.DATA
+            MediaStore.Images.Media._ID,
+            MediaLoader.ALL_MEDIA_BUCKET_ID + " AS " + MediaStore.Images.Media.BUCKET_ID,
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.DATA
     };
     static final String MEDIA_SORT_ORDER = MediaStore.Images.Media.DATE_TAKEN + " DESC";
 
     static final String[] BUCKET_PROJECTION = {
-            MediaStore.Images.ImageColumns.BUCKET_ID,
-            MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
-            MediaStore.Images.ImageColumns.DATA
+            MediaStore.Images.Media.BUCKET_ID,
+            MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+            MediaStore.Images.Media.DATA
     };
     // The template for "WHERE" parameter is like:
     //    SELECT ... FROM ... WHERE (%s)

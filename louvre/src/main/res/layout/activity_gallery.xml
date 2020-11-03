@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
@@ -16,27 +16,27 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout="@layout/fragment_gallery" />
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/appbarTheme"
         android:transitionGroup="true">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.andremion.counterfab.CounterFab
         android:id="@+id/fab_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/design_fab_size_normal"
+        android:layout_height="@dimen/design_fab_size_normal"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/gallery_fab_margin"
         app:layout_behavior="com.andremion.louvre.util.FabBehavior"
         app:srcCompat="@drawable/ic_done_white_24dp" />
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

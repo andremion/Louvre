@@ -16,9 +16,9 @@
 
 package com.andremion.louvre.util.transition;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.SharedElementCallback;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.SharedElementCallback;
+import androidx.core.view.ViewCompat;
 import android.view.View;
 
 import java.util.ArrayList;

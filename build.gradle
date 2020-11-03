@@ -1,12 +1,10 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:4.1.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     }
 }
@@ -17,27 +15,27 @@ plugins {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url "https://maven.google.com" }
     }
     project.ext {
 
-        compileSdkVersion = 26
-        buildToolsVersion = '26.0.2'
+        compileSdkVersion = 30
         minSdkVersion = 16
-        targetSdkVersion = 26
+        targetSdkVersion = 30
 
         versionCode = 9
         versionName = "1.2.3"
 
-        supportLibraryVersion = '26.1.0'
-        counterFabVersion = '1.0.2'
+        materialVersion = '1.2.1'
+        recyclerViewVersion = '1.1.0'
+        counterFabVersion = '1.2.2'
         glideVersion = '4.3.1'
         photoViewVersion = '2.0.0'
 
-        junitVersion = '4.12'
-        espressoVersion = '2.2.+'
+        junitVersion = '4.13.1'
 
         name = 'Louvre'
         description = 'A small customizable image picker. Useful to handle an gallery image pick action built-in your app.'

@@ -19,13 +19,13 @@ package com.andremion.louvre.home;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,9 +119,9 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         if (mData != null && !mData.isClosed()) {
             mData.moveToPosition(position);
             if (VIEW_TYPE_MEDIA == mViewType) {
-                return mData.getLong(mData.getColumnIndex(MediaStore.Images.ImageColumns._ID));
+                return mData.getLong(mData.getColumnIndex(MediaStore.Images.Media._ID));
             } else {
-                return mData.getLong(mData.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_ID));
+                return mData.getLong(mData.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
             }
         }
         return super.getItemId(position);
@@ -272,9 +272,9 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
         assert mData != null; // It is supposed not be null here
         mData.moveToPosition(position);
         if (mViewType == VIEW_TYPE_MEDIA) {
-            return mData.getString(mData.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
+            return mData.getString(mData.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
         } else {
-            return mData.getString(mData.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
+            return mData.getString(mData.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
         }
     }
 
@@ -287,7 +287,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private long getBucketId(int position) {
         assert mData != null; // It is supposed not be null here
         mData.moveToPosition(position);
-        return mData.getLong(mData.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_ID));
+        return mData.getLong(mData.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
     }
 
     abstract class ViewHolder extends RecyclerView.ViewHolder {

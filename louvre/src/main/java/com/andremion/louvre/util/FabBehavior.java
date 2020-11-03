@@ -17,12 +17,15 @@
 package com.andremion.louvre.util;
 
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Custom {@link FloatingActionButton.Behavior} to hide {@link FloatingActionButton} when user is scrolling
@@ -37,26 +40,27 @@ public class FabBehavior extends FloatingActionButton.Behavior {
     }
 
     @Override
-    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child,
-                                       View directTargetChild, View target, int nestedScrollAxes) {
-        return super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes)
-                || ((nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull FloatingActionButton child,
+                                       @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
+        return super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, axes, type)
+                || (type == ViewCompat.TYPE_TOUCH && (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0
                 && target instanceof RecyclerView);
     }
 
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target,
-                               int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-        if (Math.abs(dyConsumed) > 0 && child.getVisibility() == View.VISIBLE) {
+    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull FloatingActionButton child,
+                               @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed,
+                               int type, @NonNull int[] consumed) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
+        if (type == ViewCompat.TYPE_TOUCH && Math.abs(dyConsumed) > 0 && child.getVisibility() == View.VISIBLE) {
             child.hide();
         }
     }
 
     @Override
-    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target) {
-        super.onStopNestedScroll(coordinatorLayout, child, target);
-        child.show();
+    public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull FloatingActionButton child,
+                                   @NonNull View target, int type) {
+        super.onStopNestedScroll(coordinatorLayout, child, target, type);
+        if (type == ViewCompat.TYPE_TOUCH) child.show();
     }
-
 }

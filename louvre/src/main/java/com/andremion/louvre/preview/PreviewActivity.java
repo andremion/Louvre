@@ -23,17 +23,17 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
@@ -50,7 +50,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.NO_POSITION;
+import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
 public class PreviewActivity extends AppCompatActivity implements MediaLoader.Callbacks, PreviewAdapter.Callbacks {
 
