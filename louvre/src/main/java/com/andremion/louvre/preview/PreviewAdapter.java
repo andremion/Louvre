@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017. André Mion
+ * Copyright (c) 2020. André Mion
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,19 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.andremion.louvre.R;
 import com.andremion.louvre.util.transition.MediaSharedElementCallback;
@@ -112,7 +113,7 @@ class PreviewAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = mInflater.inflate(R.layout.page_item_preview, container, false);
         ViewHolder holder = new ViewHolder(view);
         Uri data = getData(position);
@@ -133,7 +134,7 @@ class PreviewAdapter extends PagerAdapter {
     private long getItemId(int position) {
         if (mData != null && !mData.isClosed()) {
             mData.moveToPosition(position);
-            return mData.getLong(mData.getColumnIndex(MediaStore.Images.ImageColumns._ID));
+            return mData.getLong(mData.getColumnIndex(MediaStore.Images.Media._ID));
         }
         return NO_ID;
     }
@@ -167,7 +168,7 @@ class PreviewAdapter extends PagerAdapter {
     }
 
     @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         if (object instanceof ViewHolder) {
             mCurrentPosition = position;
             mSharedElementCallback.setSharedElementViews(((ViewHolder) object).imageView, mCheckbox);
@@ -178,7 +179,7 @@ class PreviewAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return object instanceof ViewHolder
                 && view.equals(((ViewHolder) object).itemView);
     }

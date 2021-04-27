@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017. André Mion
+ * Copyright (c) 2020. André Mion
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.andremion.louvre.util;
 
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 public class AnimationHelper {

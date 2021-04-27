@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017. André Mion
+ * Copyright (c) 2020. André Mion
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package com.andremion.louvre.util.transition;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.SharedElementCallback;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.SharedElementCallback;
+import androidx.core.view.ViewCompat;
 import android.view.View;
 
 import java.util.ArrayList;

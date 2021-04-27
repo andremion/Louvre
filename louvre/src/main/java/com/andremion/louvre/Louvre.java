@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017. André Mion
+ * Copyright (c) 2020. André Mion
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ package com.andremion.louvre;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringDef;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringDef;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.andremion.louvre.home.GalleryActivity;
 

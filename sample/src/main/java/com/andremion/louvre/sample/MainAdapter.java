@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017. André Mion
+ * Copyright (c) 2020. André Mion
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package com.andremion.louvre.sample;
 
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
