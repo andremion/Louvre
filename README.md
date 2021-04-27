@@ -11,7 +11,7 @@ A small customizable image picker. Useful to handle an gallery image pick action
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 ![minSdkVersion 19](https://img.shields.io/badge/minSdkVersion-19-red.svg?style=true)
 ![compileSdkVersion 25](https://img.shields.io/badge/compileSdkVersion-25-yellow.svg?style=true)
-[![Download](https://api.bintray.com/packages/andremion/github/Louvre/images/download.svg)](https://bintray.com/andremion/github/Louvre/_latestVersion)
+[![maven-central](https://img.shields.io/maven-central/v/com.github.andremion/louvre.svg)](https://search.maven.org/#artifactdetails%7Ccom.github.andremion%7Clouvre%7C1.3.0%7Caar)
 
 [![Android Arsenal Louvre](https://img.shields.io/badge/Android%20Arsenal-Louvre-green.svg?style=true)](https://android-arsenal.com/details/1/5188)
 [![MaterialUp Louvre](https://img.shields.io/badge/MaterialUp-Louvre-blue.svg?style=true)](https://www.uplabs.com/posts/louvre)
